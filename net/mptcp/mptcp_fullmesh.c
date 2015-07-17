@@ -75,7 +75,7 @@ struct fullmesh_priv {
 
 	u8 rem4_bits;
 	u8 rem6_bits;
-	u8 first_pair:1; /* Are we establishing additional subflow for primary pair?*/
+//	u8 first_pair:1; /* Are we establishing additional subflow for primary pair?*/
 };
 
 struct mptcp_fm_ns {
@@ -315,7 +315,7 @@ static void mptcp_v4_subflows(struct sock *meta_sk,
 {
 	int i;
 	printk(KERN_INFO "******** Entering mptcp_v4_subflows ********\n");
-	for (i = 1; i < num_subflows; i++) {
+	for (i = 0; i < num_subflows; i++) {
 		printk(KERN_INFO "******** in mptcp_v4_subflows i = %d ********\n",i);
 		mptcp_init4_subsockets(meta_sk, loc, rem);
 	}
@@ -393,7 +393,8 @@ next_subflow:
 			rem4.port = rem->port;
 			rem4.rem4_id = rem->rem4_id;
 
-			mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i], &rem4);
+//			mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i], &rem4);
+			mptcp_v4_subflows(meta_sk,&mptcp_local->locaddr4[i],&rem4);
 		//	mptcp_v4_subflows(meta_sk, &mptcp_local->locaddr4[i], &rem4);
 			printk(KERN_INFO "******** Goto next_subflow ********\n");
 			goto next_subflow;
@@ -475,19 +476,6 @@ next_subflow:
 	mutex_lock(&mpcb->mpcb_mutex);
 	lock_sock_nested(meta_sk, SINGLE_DEPTH_NESTING);
 
-	if (fmp->first_pair == 0) {
-		struct mptcp_loc4 loc;
-		struct mptcp_rem4 rem;
-		loc.addr.s_addr = inet_sk(meta_sk)->inet_saddr;
-		loc.loc4_id = 0;
-		loc.low_prio = 0;
-		rem.addr.s_addr = inet_sk(meta_sk)->inet_daddr;
-		rem.port = inet_sk(meta_sk)->inet_dport;
-		rem.rem4_id = 0;
-		mptcp_v4_subflows(meta_sk, &loc, &rem);
-		fmp->first_pair = 1;
-	}
-
 	iter++;
 
 	if (sock_flag(meta_sk, SOCK_DEAD))
@@ -516,27 +504,16 @@ next_subflow:
 			rem4.rem4_id = rem->rem4_id;
 
 			/* If a route is not yet available then retry once */
-			if (mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i],
-						   &rem4) == -ENETUNREACH)
-				retry = rem->retry_bitfield |= (1 << i);
+	//		if (mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i],
+	//					   &rem4) == -ENETUNREACH)
+	//			retry = rem->retry_bitfield |= (1 << i);
+			mptcp_v4_subflows(meta_sk,&mptcp_local->locaddr4[i],&rem4);
 			printk(KERN_INFO "******** Goto next_subflow ********\n");
 			goto next_subflow;
 		}
 	}
 
 #if IS_ENABLED(CONFIG_IPV6)
-	if (fmp->first_pair == 0) {
-		struct mptcp_loc6 loc;
-		struct mptcp_rem6 rem;
-		loc.addr = inet6_sk(meta_sk)->saddr;
-		loc.loc6_id = 0;
-		loc.low_prio = 0;
-		rem.addr = meta_sk->sk_v6_daddr;
-		rem.port = inet_sk(meta_sk)->inet_dport;
-		rem.rem6_id = 0;
-		mptcp_v6_subflows(meta_sk, &loc, &rem);
-		fmp->first_pair = 1;
-	}
 
 	mptcp_for_each_bit_set(fmp->rem6_bits, i) {
 		struct fullmesh_rem6 *rem;
