@@ -453,6 +453,7 @@ int mptcp_pm_v4_init(void)
 {
 	int ret = 0;
 	struct request_sock_ops *ops = &mptcp_request_sock_ops;
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	mptcp_request_sock_ipv4_ops = tcp_request_sock_ipv4_ops;
 	mptcp_request_sock_ipv4_ops.init_req = mptcp_v4_init_req;
@@ -477,6 +478,7 @@ int mptcp_pm_v4_init(void)
 	}
 
 out:
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return ret;
 
 err_reqsk_create:
@@ -487,8 +489,10 @@ err_reqsk_create:
 
 void mptcp_pm_v4_undo(void)
 {
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 	kmem_cache_destroy(mptcp_request_sock_ops.slab);
 	kfree(mptcp_request_sock_ops.slab_name);
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 
