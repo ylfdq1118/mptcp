@@ -512,10 +512,11 @@ next_subflow:
 			rem4.rem4_id = rem->rem4_id;
 
 			/* If a route is not yet available then retry once */
-	//		if (mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i],
-	//					   &rem4) == -ENETUNREACH)
-	//			retry = rem->retry_bitfield |= (1 << i);
-			mptcp_v4_subflows(meta_sk,&mptcp_local->locaddr4[i],&rem4);
+			if (mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i],
+						   &rem4) == -ENETUNREACH)
+				retry = rem->retry_bitfield |= (1 << i);
+			printk(KERN_INFO "******** retry: %d ********\n",retry);
+//			mptcp_v4_subflows(meta_sk,&mptcp_local->locaddr4[i],&rem4);
 			printk(KERN_INFO "******** Goto next_subflow ********\n");
 			goto next_subflow;
 		}
