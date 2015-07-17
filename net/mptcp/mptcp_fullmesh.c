@@ -494,6 +494,7 @@ next_subflow:
 		u8 remaining_bits;
 
 		rem = &fmp->remaddr4[i];
+		printk(KERN_INFO "******** rem->bitfield before: %d ********\n",rem->bitfield);
 		remaining_bits = ~(rem->bitfield) & mptcp_local->loc4_bits;
 		printk(KERN_INFO "******** remaining_bits: %d ********\n",remaining_bits);
 
@@ -504,6 +505,7 @@ next_subflow:
 			printk(KERN_INFO "******** mptcp_find_free_index return %d ********\n",i);
 
 			rem->bitfield |= (1 << i);
+			printk(KERN_INFO "******** rem->bitfield after: %d ********\n",rem->bitfield);
 
 			rem4.addr = rem->addr;
 			rem4.port = rem->port;
