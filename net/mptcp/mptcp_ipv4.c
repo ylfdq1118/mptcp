@@ -333,6 +333,7 @@ int mptcp_init4_subsockets(struct sock *meta_sk, const struct mptcp_loc4 *loc,
 	struct sockaddr_in loc_in, rem_in;
 	struct socket sock;
 	int ulid_size = 0, ret;
+	printk(KERN_INFO "******** Entering mptcp_init4_subsockets ********\n");
 
 	/** First, create and prepare the new socket */
 
@@ -345,6 +346,7 @@ int mptcp_init4_subsockets(struct sock *meta_sk, const struct mptcp_loc4 *loc,
 	ret = inet_create(sock_net(meta_sk), &sock, IPPROTO_TCP, 1);
 	if (unlikely(ret < 0)) {
 		mptcp_debug("%s inet_create failed ret: %d\n", __func__, ret);
+		printk(KERN_INFO "******** Leaving mptcp_init4_subsockets due to unlikely ********\n");
 		return ret;
 	}
 
@@ -401,9 +403,12 @@ int mptcp_init4_subsockets(struct sock *meta_sk, const struct mptcp_loc4 *loc,
 		goto error;
 	}
 
+	printk(KERN_INFO "loc: %pI4:%d rem:%pI4:%d\n", &loc_in.sin_addr,ntohs(loc_in.sin_port),&rem_in.sin_addr,ntohs(rem_in.sin_port));
+
 	sk_set_socket(sk, meta_sk->sk_socket);
 	sk->sk_wq = meta_sk->sk_wq;
 
+	printk(KERN_INFO "******** Leaving mptcp_init4_subsockets with 0 returned ********\n");
 	return 0;
 
 error:
@@ -415,6 +420,7 @@ error:
 		mptcp_sub_force_close(sk);
 		local_bh_enable();
 	}
+	printk(KERN_INFO "******** Leaving mptcp_init4_subsockets with error ********\n");
 	return ret;
 }
 EXPORT_SYMBOL(mptcp_init4_subsockets);

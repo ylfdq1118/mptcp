@@ -44,6 +44,7 @@ static int mptcp_get_avail_list_ipv4(struct sock *sk)
 {
 	int i, j, list_taken, opt_ret, opt_len;
 	unsigned char *opt_ptr, *opt_end_ptr, opt[MAX_IPOPTLEN];
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	for (i = 0; i < MPTCP_GW_MAX_LISTS; ++i) {
 		if (mptcp_gws->len[i] == 0)
@@ -129,8 +130,10 @@ sock_lsrr:
 	if (i >= MPTCP_GW_MAX_LISTS)
 		goto error;
 
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return i;
 error:
+	printk(KERN_INFO "******** Leaving %s with error ********\n",__func__);
 	return -1;
 }
 
@@ -144,6 +147,7 @@ static void mptcp_v4_add_lsrr(struct sock *sk, struct in_addr addr)
 	unsigned char opt[MAX_IPOPTLEN] = {0};
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct binder_priv *fmp = (struct binder_priv *)&tp->mpcb->mptcp_pm[0];
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	/* Read lock: multiple sockets can read LSRR addresses at the same
 	 * time, but writes are done in mutual exclusion.
@@ -188,6 +192,7 @@ static void mptcp_v4_add_lsrr(struct sock *sk, struct in_addr addr)
 	spin_unlock(fmp->flow_lock);
 	read_unlock(&mptcp_gws_lock);
 
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return;
 }
 

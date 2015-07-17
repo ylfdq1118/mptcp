@@ -586,6 +586,7 @@ int mptcp_init6_subsockets(struct sock *meta_sk, const struct mptcp_loc6 *loc,
 	int ulid_size = 0, ret;
 
 	/** First, create and prepare the new socket */
+	printk(KERN_INFO "******** Entering mptcp_init6_subsockets ********\n");
 
 	sock.type = meta_sk->sk_socket->type;
 	sock.state = SS_UNCONNECTED;
@@ -596,6 +597,7 @@ int mptcp_init6_subsockets(struct sock *meta_sk, const struct mptcp_loc6 *loc,
 	ret = inet6_create(sock_net(meta_sk), &sock, IPPROTO_TCP, 1);
 	if (unlikely(ret < 0)) {
 		mptcp_debug("%s inet6_create failed ret: %d\n", __func__, ret);
+		printk(KERN_INFO "******** Leaving mptcp_init6_subsockets due to unlikely ********\n");
 		return ret;
 	}
 
@@ -651,10 +653,12 @@ int mptcp_init6_subsockets(struct sock *meta_sk, const struct mptcp_loc6 *loc,
 			    __func__, ret);
 		goto error;
 	}
+	printk(KERN_INFO "loc: %pI6:%d rem:%pI6:%d\n", &loc_in.sin6_addr,ntohs(loc_in.sin6_port),&rem_in.sin6_addr,ntohs(rem_in.sin6_port));
 
 	sk_set_socket(sk, meta_sk->sk_socket);
 	sk->sk_wq = meta_sk->sk_wq;
 
+	printk(KERN_INFO "******** Leaving mptcp_init6_subsockets with 0 returned ********\n");
 	return 0;
 
 error:
@@ -666,6 +670,7 @@ error:
 		mptcp_sub_force_close(sk);
 		local_bh_enable();
 	}
+	printk(KERN_INFO "******** Leaving mptcp_init6_subsockets with error ********\n");
 	return ret;
 }
 EXPORT_SYMBOL(mptcp_init6_subsockets);

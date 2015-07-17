@@ -1368,15 +1368,19 @@ int mptcp_add_sock(struct sock *meta_sk, struct sock *sk, u8 loc_id, u8 rem_id,
 {
 	struct mptcp_cb *mpcb	= tcp_sk(meta_sk)->mpcb;
 	struct tcp_sock *tp	= tcp_sk(sk);
+//	printk(KERN_INFO "******** Entering mptcp_add_sock ********\n");
 
 	tp->mptcp = kmem_cache_zalloc(mptcp_sock_cache, flags);
-	if (!tp->mptcp)
+	if (!tp->mptcp) {
+//		printk(KERN_INFO "******** Leaving mptcp_add_sock ********\n");
 		return -ENOMEM;
+	}
 
 	tp->mptcp->path_index = mptcp_set_new_pathindex(mpcb);
 	/* No more space for more subflows? */
 	if (!tp->mptcp->path_index) {
 		kmem_cache_free(mptcp_sock_cache, tp->mptcp);
+//		printk(KERN_INFO "******** Leaving mptcp_add_sock ********\n");
 		return -EPERM;
 	}
 
@@ -1443,6 +1447,7 @@ int mptcp_add_sock(struct sock *meta_sk, struct sock *sk, u8 loc_id, u8 rem_id,
 			    ntohs(((struct inet_sock *)tp)->inet_dport),
 			    mpcb->cnt_subflows);
 #endif
+//	printk(KERN_INFO "******** Leaving mptcp_add_sock ********\n");
 
 	return 0;
 }
