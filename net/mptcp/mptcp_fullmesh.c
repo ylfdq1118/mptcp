@@ -464,6 +464,7 @@ static void create_subflow_worker(struct work_struct *work)
 		printk(KERN_INFO "******** Leaving create_subflow_worker ********\n");
 		return;
 	}
+
 	printk(KERN_INFO "******** Arriving at next_subflow ********\n");
 
 next_subflow:
@@ -485,17 +486,22 @@ next_subflow:
 	    !tcp_sk(mpcb->master_sk)->mptcp->fully_established)
 		goto exit;
 
+	
+	printk(KERN_INFO "******** loc4_bits: %d ********\n",mptcp_local->loc4_bits);
+	printk(KERN_INFO "******** fmp->rem4_bits: %d ********\n",fmp->rem4_bits);
 	mptcp_for_each_bit_set(fmp->rem4_bits, i) {
 		struct fullmesh_rem4 *rem;
 		u8 remaining_bits;
 
 		rem = &fmp->remaddr4[i];
 		remaining_bits = ~(rem->bitfield) & mptcp_local->loc4_bits;
+		printk(KERN_INFO "******** remaining_bits: %d ********\n",remaining_bits);
 
 		/* Are there still combinations to handle? */
 		if (remaining_bits) {
 			int i = mptcp_find_free_index(~remaining_bits);
 			struct mptcp_rem4 rem4;
+			printk(KERN_INFO "******** mptcp_find_free_index return %d ********\n",i);
 
 			rem->bitfield |= (1 << i);
 
