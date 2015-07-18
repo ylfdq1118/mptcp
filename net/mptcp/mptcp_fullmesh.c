@@ -504,7 +504,8 @@ next_subflow:
 		rem.addr.s_addr = inet_sk(meta_sk)->inet_daddr;
 		rem.port = inet_sk(meta_sk)->inet_dport;
 		rem.rem4_id = 0;
-		mptcp_v4_subflows(meta_sk, &loc, &rem, cal_num_subflow(iter) - 1);
+		printk(KERN_INFO "******** Currently iter == 0 ********\n");
+		mptcp_v4_subflows(meta_sk, &loc, &rem, cal_num_subflow(iter + 1) - 1);
 	}
 
 	iter++;
@@ -546,7 +547,7 @@ next_subflow:
 //						   &rem4) == -ENETUNREACH)
 //				retry = rem->retry_bitfield |= (1 << i);
 //			printk(KERN_INFO "******** retry: %d ********\n",retry);
-			mptcp_v4_subflows(meta_sk, &mptcp_local->locaddr4[i], &rem4, cal_num_subflow(iter));
+			mptcp_v4_subflows(meta_sk, &mptcp_local->locaddr4[i], &rem4, cal_num_subflow(iter + 1));
 			printk(KERN_INFO "******** Goto next_subflow ********\n");
 			goto next_subflow;
 		}
