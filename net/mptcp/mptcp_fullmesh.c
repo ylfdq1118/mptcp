@@ -112,7 +112,7 @@ static void mptcp_addv4_raddr(struct mptcp_cb *mpcb,
 	int i;
 	struct fullmesh_rem4 *rem4;
 	struct fullmesh_priv *fmp = fullmesh_get_priv(mpcb);
-	printk(KERN_INFO "******** Entering mptcp_addv4_raddr ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	mptcp_for_each_bit_set(fmp->rem4_bits, i) {
 		rem4 = &fmp->remaddr4[i];
@@ -120,7 +120,7 @@ static void mptcp_addv4_raddr(struct mptcp_cb *mpcb,
 		/* Address is already in the list --- continue */
 		if (rem4->rem4_id == id &&
 		    rem4->addr.s_addr == addr->s_addr && rem4->port == port) {
-			printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+			printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 			return;
 		}
 
@@ -138,7 +138,7 @@ static void mptcp_addv4_raddr(struct mptcp_cb *mpcb,
 			rem4->addr.s_addr = addr->s_addr;
 			rem4->port = port;
 			mpcb->list_rcvd = 1;
-			printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+			printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 			return;
 		}
 	}
@@ -148,7 +148,7 @@ static void mptcp_addv4_raddr(struct mptcp_cb *mpcb,
 	if (i < 0) {
 		mptcp_debug("%s: At max num of remote addresses: %d --- not adding address: %pI4\n",
 			    __func__, MPTCP_MAX_ADDR, &addr->s_addr);
-		printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+		printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 		return;
 	}
 
@@ -162,7 +162,7 @@ static void mptcp_addv4_raddr(struct mptcp_cb *mpcb,
 	rem4->rem4_id = id;
 	mpcb->list_rcvd = 1;
 	fmp->rem4_bits |= (1 << i);
-	printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 
 	return;
 }
@@ -174,7 +174,7 @@ static void mptcp_addv6_raddr(struct mptcp_cb *mpcb,
 	int i;
 	struct fullmesh_rem6 *rem6;
 	struct fullmesh_priv *fmp = fullmesh_get_priv(mpcb);
-	printk(KERN_INFO "******** Entering mptcp_addv6_raddr ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	mptcp_for_each_bit_set(fmp->rem6_bits, i) {
 		rem6 = &fmp->remaddr6[i];
@@ -182,7 +182,7 @@ static void mptcp_addv6_raddr(struct mptcp_cb *mpcb,
 		/* Address is already in the list --- continue */
 		if (rem6->rem6_id == id &&
 		    ipv6_addr_equal(&rem6->addr, addr) && rem6->port == port) {
-			printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+			printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 			return;
 		}
 
@@ -199,7 +199,7 @@ static void mptcp_addv6_raddr(struct mptcp_cb *mpcb,
 			rem6->addr = *addr;
 			rem6->port = port;
 			mpcb->list_rcvd = 1;
-			printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+			printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 			return;
 		}
 	}
@@ -209,7 +209,7 @@ static void mptcp_addv6_raddr(struct mptcp_cb *mpcb,
 	if (i < 0) {
 		mptcp_debug("%s: At max num of remote addresses: %d --- not adding address: %pI6\n",
 			    __func__, MPTCP_MAX_ADDR, addr);
-		printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+		printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 		return;
 	}
 
@@ -224,7 +224,7 @@ static void mptcp_addv6_raddr(struct mptcp_cb *mpcb,
 	mpcb->list_rcvd = 1;
 	fmp->rem6_bits |= (1 << i);
 
-	printk(KERN_INFO "******** Leaving mptcp_addv4_raddr ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return;
 }
 
@@ -232,7 +232,7 @@ static void mptcp_v4_rem_raddress(struct mptcp_cb *mpcb, u8 id)
 {
 	int i;
 	struct fullmesh_priv *fmp = fullmesh_get_priv(mpcb);
-	printk(KERN_INFO "******** Entering mptcp_v4_rem_raddresr ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	mptcp_for_each_bit_set(fmp->rem4_bits, i) {
 		if (fmp->remaddr4[i].rem4_id == id) {
@@ -242,7 +242,7 @@ static void mptcp_v4_rem_raddress(struct mptcp_cb *mpcb, u8 id)
 			break;
 		}
 	}
-	printk(KERN_INFO "******** Leaving mptcp_v4_rem_raddresr ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 static void mptcp_v6_rem_raddress(struct mptcp_cb *mpcb, u8 id)
@@ -250,7 +250,7 @@ static void mptcp_v6_rem_raddress(struct mptcp_cb *mpcb, u8 id)
 	int i;
 	struct fullmesh_priv *fmp = fullmesh_get_priv(mpcb);
 
-	printk(KERN_INFO "******** Entering mptcp_v6_rem_raddresr ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 	mptcp_for_each_bit_set(fmp->rem6_bits, i) {
 		if (fmp->remaddr6[i].rem6_id == id) {
 			/* remove address from bitfield */
@@ -259,7 +259,7 @@ static void mptcp_v6_rem_raddress(struct mptcp_cb *mpcb, u8 id)
 			break;
 		}
 	}
-	printk(KERN_INFO "******** Leaving mptcp_v6_rem_raddresr ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 /* Sets the bitfield of the remote-address field */
@@ -268,16 +268,16 @@ static void mptcp_v4_set_init_addr_bit(struct mptcp_cb *mpcb,
 {
 	int i;
 	struct fullmesh_priv *fmp = fullmesh_get_priv(mpcb);
-	printk(KERN_INFO "******** Entering mptcp_v4_set_init_addr_bit ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	mptcp_for_each_bit_set(fmp->rem4_bits, i) {
 		if (fmp->remaddr4[i].addr.s_addr == addr->s_addr) {
 			fmp->remaddr4[i].bitfield |= (1 << index);
-			printk(KERN_INFO "******** Leaving mptcp_v4_set_init_addr_bit ********\n");
+			printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 			return;
 		}
 	}
-	printk(KERN_INFO "******** Leaving mptcp_v4_set_init_addr_bit ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 /* Sets the bitfield of the remote-address field */
@@ -286,52 +286,52 @@ static void mptcp_v6_set_init_addr_bit(struct mptcp_cb *mpcb,
 {
 	int i;
 	struct fullmesh_priv *fmp = fullmesh_get_priv(mpcb);
-	printk(KERN_INFO "******** Entering mptcp_v6_set_init_addr_bit ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	mptcp_for_each_bit_set(fmp->rem6_bits, i) {
 		if (ipv6_addr_equal(&fmp->remaddr6[i].addr, addr)) {
 			fmp->remaddr6[i].bitfield |= (1 << index);
-			printk(KERN_INFO "******** Leaving mptcp_v6_set_init_addr_bit ********\n");
+			printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 			return;
 		}
 	}
-	printk(KERN_INFO "******** Leaving mptcp_v6_set_init_addr_bit ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 static void mptcp_set_init_addr_bit(struct mptcp_cb *mpcb,
 				    const union inet_addr *addr,
 				    sa_family_t family, u8 id)
 {
-	printk(KERN_INFO "******** Entering mptcp_set_init_addr_bit ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 	if (family == AF_INET)
 		mptcp_v4_set_init_addr_bit(mpcb, &addr->in, id);
 	else
 		mptcp_v6_set_init_addr_bit(mpcb, &addr->in6, id);
-	printk(KERN_INFO "******** Leaving mptcp_set_init_addr_bit ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 static void mptcp_v4_subflows(struct sock *meta_sk,
-		const struct mptcp_loc4 *loc, struct mptcp_rem4 *rem)
+		const struct mptcp_loc4 *loc, struct mptcp_rem4 *rem, int num_to_create)
 {
 	int i;
-	printk(KERN_INFO "******** Entering mptcp_v4_subflows ********\n");
-	for (i = 0; i < num_subflows; i++) {
-		printk(KERN_INFO "******** in mptcp_v4_subflows i = %d ********\n",i);
+	printk(KERN_INFO "******** Entering %s num_to_create is %d ********\n",__func__,num_to_create);
+	for (i = 0; i < num_to_create; i++) {
+		printk(KERN_INFO "******** in %s i = %d ********\n",__func__,i);
 		mptcp_init4_subsockets(meta_sk, loc, rem);
 	}
-	printk(KERN_INFO "******** Leaving mptcp_v4_subflows ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 /*
 static void mptcp_v6_subflows(struct sock *meta_sk,
 		const struct mptcp_loc6 *loc, struct mptcp_rem6 *rem)
 {
 	int i;
-	printk(KERN_INFO "******** Entering mptcp_v6_subflows ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 	for (i = 1; i < num_subflows; i++) {
 		printk(KERN_INFO "******** in mptcp_v6_subflows i = %d ********\n",i);
 		mptcp_init6_subsockets(meta_sk, loc, rem);
 	}
-	printk(KERN_INFO "******** Leaving mptcp_v6_subflows ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 */
 
@@ -348,7 +348,7 @@ static void retry_subflow_worker(struct work_struct *work)
 	struct mptcp_loc_addr *mptcp_local;
 	struct mptcp_fm_ns *fm_ns = fm_get_ns(sock_net(meta_sk));
 	int iter = 0, i;
-	printk(KERN_INFO "******** Entering retry_subflow_worker ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	/* We need a local (stable) copy of the address-list. Really, it is not
 	 * such a big deal, if the address-list is not 100% up-to-date.
@@ -359,7 +359,7 @@ static void retry_subflow_worker(struct work_struct *work)
 	rcu_read_unlock_bh();
 
 	if (!mptcp_local) {
-		printk(KERN_INFO "******** Leaving retry_subflow_worker ********\n");
+		printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 		return;
 	}
 	printk(KERN_INFO "******** Arriving at next_subflow ********\n");
@@ -429,7 +429,7 @@ exit:
 	release_sock(meta_sk);
 	mutex_unlock(&mpcb->mpcb_mutex);
 	sock_put(meta_sk);
-	printk(KERN_INFO "******** Leaving retry_subflow_worker ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 /**
@@ -439,6 +439,24 @@ exit:
  * new subflows and giving other processes a chance to do some work on the
  * socket and potentially finishing the communication.
  **/
+
+static int cal_num_subflow(int i) 
+{
+	int j;
+	int k = 0;
+	int n = num_subflows;
+	while (n > 0) {
+		n /= 10;
+		k++;
+	}
+	if (i > k) 
+		return 0;
+	n = num_subflows;
+	for (j = k - i; j > 0; j--)
+		n /= 10;
+	return n % 10;
+}
+
 static void create_subflow_worker(struct work_struct *work)
 {
 	struct fullmesh_priv *fmp = container_of(work, struct fullmesh_priv,
@@ -449,7 +467,7 @@ static void create_subflow_worker(struct work_struct *work)
 	struct mptcp_fm_ns *fm_ns = fm_get_ns(sock_net(meta_sk));
 	int iter = 0, retry = 0;
 	int i;
-	printk(KERN_INFO "******** Entering create_subflow_worker ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	/* We need a local (stable) copy of the address-list. Really, it is not
 	 * such a big deal, if the address-list is not 100% up-to-date.
@@ -460,10 +478,11 @@ static void create_subflow_worker(struct work_struct *work)
 	rcu_read_unlock_bh();
 
 	if (!mptcp_local) {
-		printk(KERN_INFO "******** Leaving create_subflow_worker ********\n");
+		printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 		return;
 	}
 
+	printk(KERN_INFO "******** Current parameter is %d ********\n",num_subflows);
 	printk(KERN_INFO "******** Arriving at next_subflow ********\n");
 
 next_subflow:
@@ -475,6 +494,18 @@ next_subflow:
 	}
 	mutex_lock(&mpcb->mpcb_mutex);
 	lock_sock_nested(meta_sk, SINGLE_DEPTH_NESTING);
+
+	if (iter==0) {
+		struct mptcp_loc4 loc;
+		struct mptcp_rem4 rem;
+		loc.addr.s_addr = inet_sk(meta_sk)->inet_saddr;
+		loc.loc4_id = 0;
+		loc.low_prio = 0;
+		rem.addr.s_addr = inet_sk(meta_sk)->inet_daddr;
+		rem.port = inet_sk(meta_sk)->inet_dport;
+		rem.rem4_id = 0;
+		mptcp_v4_subflows(meta_sk, &loc, &rem, cal_num_subflow(iter) - 1);
+	}
 
 	iter++;
 
@@ -511,11 +542,11 @@ next_subflow:
 			rem4.rem4_id = rem->rem4_id;
 
 			/* If a route is not yet available then retry once */
-			if (mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i],
-						   &rem4) == -ENETUNREACH)
-				retry = rem->retry_bitfield |= (1 << i);
-			printk(KERN_INFO "******** retry: %d ********\n",retry);
-//			mptcp_v4_subflows(meta_sk,&mptcp_local->locaddr4[i],&rem4);
+//			if (mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i],
+//						   &rem4) == -ENETUNREACH)
+//				retry = rem->retry_bitfield |= (1 << i);
+//			printk(KERN_INFO "******** retry: %d ********\n",retry);
+			mptcp_v4_subflows(meta_sk, &mptcp_local->locaddr4[i], &rem4, cal_num_subflow(iter));
 			printk(KERN_INFO "******** Goto next_subflow ********\n");
 			goto next_subflow;
 		}
@@ -562,7 +593,7 @@ exit:
 	release_sock(meta_sk);
 	mutex_unlock(&mpcb->mpcb_mutex);
 	sock_put(meta_sk);
-	printk(KERN_INFO "******** Leaving create_subflow_worker ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 static void announce_remove_addr(u8 addr_id, struct sock *meta_sk)
@@ -1205,7 +1236,7 @@ static void full_mesh_new_session(struct sock *meta_sk)
 	int i, index;
 	union inet_addr saddr, daddr;
 	sa_family_t family;
-	printk(KERN_INFO "******** Entering full_mesh_new_session ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	/* Init local variables necessary for the rest */
 	if (meta_sk->sk_family == AF_INET || mptcp_v6_is_v4_mapped(meta_sk)) {
@@ -1277,13 +1308,13 @@ static void full_mesh_new_session(struct sock *meta_sk)
 	if (master_tp->mptcp->send_mp_prio)
 		tcp_send_ack(mpcb->master_sk);
 
-	printk(KERN_INFO "******** Leaving full_mesh_new_session ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return;
 
 fallback:
 	rcu_read_unlock();
 	mptcp_fallback_default(mpcb);
-	printk(KERN_INFO "******** Leaving full_mesh_new_session ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return;
 }
 
@@ -1291,18 +1322,18 @@ static void full_mesh_create_subflows(struct sock *meta_sk)
 {
 	struct mptcp_cb *mpcb = tcp_sk(meta_sk)->mpcb;
 	struct fullmesh_priv *fmp = fullmesh_get_priv(mpcb);
-	printk(KERN_INFO "******** Entering full_mesh_create_subflows ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	if (mpcb->infinite_mapping_snd || mpcb->infinite_mapping_rcv ||
 	    mpcb->send_infinite_mapping ||
 	    mpcb->server_side || sock_flag(meta_sk, SOCK_DEAD)) {
-		printk(KERN_INFO "******** Leaving full_mesh_create_subflows ********\n");
+		printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 		return;
 	}
 
 	if (mpcb->master_sk &&
 	    !tcp_sk(mpcb->master_sk)->mptcp->fully_established) {
-		printk(KERN_INFO "******** Leaving full_mesh_create_subflows ********\n");
+		printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 		return;
 	}
 
@@ -1310,7 +1341,7 @@ static void full_mesh_create_subflows(struct sock *meta_sk)
 		sock_hold(meta_sk);
 		queue_work(mptcp_wq, &fmp->subflow_work);
 	}
-	printk(KERN_INFO "******** Leaving full_mesh_create_subflows ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 /* Called upon release_sock, if the socket was owned by the user during
@@ -1324,7 +1355,7 @@ static void full_mesh_release_sock(struct sock *meta_sk)
 	struct mptcp_fm_ns *fm_ns = fm_get_ns(sock_net(meta_sk));
 	struct sock *sk, *tmpsk;
 	int i;
-	printk(KERN_INFO "******** Entering full_mesh_release_sock ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	rcu_read_lock();
 	mptcp_local = rcu_dereference(fm_ns->local);
@@ -1438,7 +1469,7 @@ static void full_mesh_release_sock(struct sock *meta_sk)
 	update_addr_bitfields(meta_sk, mptcp_local);
 
 	rcu_read_unlock();
-	printk(KERN_INFO "******** Leaving full_mesh_release_sock ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 static int full_mesh_get_local_id(sa_family_t family, union inet_addr *addr,
@@ -1447,7 +1478,7 @@ static int full_mesh_get_local_id(sa_family_t family, union inet_addr *addr,
 	struct mptcp_loc_addr *mptcp_local;
 	struct mptcp_fm_ns *fm_ns = fm_get_ns(net);
 	int index, id = -1;
-	printk(KERN_INFO "******** Entering full_mesh_get_local_id ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	/* Handle the backup-flows */
 	rcu_read_lock();
@@ -1468,7 +1499,7 @@ static int full_mesh_get_local_id(sa_family_t family, union inet_addr *addr,
 
 	rcu_read_unlock();
 
-	printk(KERN_INFO "******** Leaving full_mesh_get_local_id ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return id;
 }
 
@@ -1692,7 +1723,7 @@ static struct mptcp_pm_ops full_mesh __read_mostly = {
 static int __init full_mesh_register(void)
 {
 	int ret;
-	printk(KERN_INFO "******** Entering full_mesh_regitser ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 
 	BUILD_BUG_ON(sizeof(struct fullmesh_priv) > MPTCP_PM_SIZE);
 
@@ -1718,7 +1749,7 @@ static int __init full_mesh_register(void)
 		goto err_reg_pm;
 
 out:
-	printk(KERN_INFO "******** Leaving full_mesh_regitser ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 	return ret;
 
 
@@ -1740,12 +1771,12 @@ static void full_mesh_unregister(void)
 #if IS_ENABLED(CONFIG_IPV6)
 	unregister_inet6addr_notifier(&inet6_addr_notifier);
 #endif
-	printk(KERN_INFO "******** Entering full_mesh_unregitser ********\n");
+	printk(KERN_INFO "******** Entering %s ********\n",__func__);
 	unregister_netdevice_notifier(&mptcp_pm_netdev_notifier);
 	unregister_inetaddr_notifier(&mptcp_pm_inetaddr_notifier);
 	unregister_pernet_subsys(&full_mesh_net_ops);
 	mptcp_unregister_path_manager(&full_mesh);
-	printk(KERN_INFO "******** Leaving full_mesh_unregitser ********\n");
+	printk(KERN_INFO "******** Leaving %s ********\n",__func__);
 }
 
 module_init(full_mesh_register);
