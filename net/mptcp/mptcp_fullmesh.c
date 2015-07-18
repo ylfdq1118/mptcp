@@ -393,8 +393,7 @@ next_subflow:
 			rem4.port = rem->port;
 			rem4.rem4_id = rem->rem4_id;
 
-//			mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i], &rem4);
-			mptcp_v4_subflows(meta_sk,&mptcp_local->locaddr4[i],&rem4);
+			mptcp_init4_subsockets(meta_sk, &mptcp_local->locaddr4[i], &rem4);
 		//	mptcp_v4_subflows(meta_sk, &mptcp_local->locaddr4[i], &rem4);
 			printk(KERN_INFO "******** Goto next_subflow ********\n");
 			goto next_subflow;
@@ -418,7 +417,7 @@ next_subflow:
 			rem6.rem6_id = rem->rem6_id;
 
 			mptcp_init6_subsockets(meta_sk, &mptcp_local->locaddr6[i], &rem6);
-			mptcp_v6_subflows(meta_sk, &mptcp_local->locaddr6[i], &rem6);
+		//	mptcp_v6_subflows(meta_sk, &mptcp_local->locaddr6[i], &rem6);
 			printk(KERN_INFO "******** Goto next_subflow ********\n");
 			goto next_subflow;
 		}
